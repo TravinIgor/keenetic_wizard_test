@@ -4,7 +4,6 @@
 
 
 # todo:
-- fix reset
-- add languages
-- test mobile devices
+- localization download
+- paths
 - errors loging
