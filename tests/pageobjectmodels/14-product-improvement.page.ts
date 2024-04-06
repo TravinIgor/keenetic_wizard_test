@@ -1,15 +1,19 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/product-improvement
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class ProductImprovementPage{
-    public page: Page
+    readonly page: Page
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly refuse_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.button_name = jsonData['isw']['buttons']['do-not-share']
 
-    async click_refuse() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/product-improvement');
-
-        await this.page.getByRole('button', { name: 'Refuse' }).click();
+        this.refuse_button = page.getByRole('button', { name: this.button_name })
     }
 }

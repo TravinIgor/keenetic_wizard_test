@@ -1,16 +1,23 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/select-configuration-option
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class SelectConfigurationOptionsPage{
-    public page: Page
+    readonly page: Page
+    readonly option_name: string
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly select_option: Locator
+    readonly next_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.option_name = jsonData['isw']['select-configuration-option']['choices']['via-ethernet']['label']
+        this.button_name = jsonData['isw']['buttons']['next']
 
-    async select_option_and_click_next() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/select-configuration-option');
-
-        await this.page.getByText('To set up Internet access via an Ethernet cable supplied directly by your ISP').click();
-        await this.page.getByRole('button', { name: 'Next' }).click();
+        this.select_option = page.getByText(this.option_name)
+        this.next_button = page.getByRole('button', { name: this.button_name })
     }
 }

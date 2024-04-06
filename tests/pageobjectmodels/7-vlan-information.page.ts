@@ -1,15 +1,19 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/vlan-information
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class VlanInformationPage{
-    public page: Page
+    readonly page: Page
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly without_VLAN_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.button_name = jsonData['isw']['vlan-setup']['without-vlan']
 
-    async click_without_vlan() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/vlan-information');
-
-        await this.page.getByRole('button', { name: 'Without VLAN' }).click();
+        this.without_VLAN_button = page.getByRole('button', { name: this.button_name })
     }
 }

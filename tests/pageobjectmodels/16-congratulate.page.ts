@@ -1,15 +1,19 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/congratulate
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class CongratulatePage{
-    public page: Page
+    readonly page: Page
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly finish_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.button_name = jsonData['isw']['buttons']['finish']
 
-    async click_finish() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/congratulate');
-
-        await this.page.getByRole('button', { name: 'Finish' }).click();
+        this.finish_button = page.getByRole('button', { name: this.button_name })
     }
 }

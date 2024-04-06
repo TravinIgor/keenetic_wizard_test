@@ -1,17 +1,22 @@
 // !!!WARNING this page will appear ONLY if russian language is installed WARNING!!!
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/accept-device-privacy-notice
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class AcceptDevicePrivacyNoticePage{
-    public page: Page
+    readonly page: Page
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly checkbox: Locator
+    readonly accept_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.button_name = jsonData['isw']['buttons']['accept']
 
-    async check_checkbox_and_click_accept() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/accept-device-privacy-notice');
-
-        await this.page.locator('.mat-checkbox-inner-container').click();
-        await this.page.getByRole('button', { name: 'Accept' }).click();
+        this.checkbox = page.locator('.mat-checkbox-inner-container')
+        this.accept_button = page.getByRole('button', { name: this.button_name })
     }
 }

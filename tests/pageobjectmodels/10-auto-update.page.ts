@@ -1,15 +1,19 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/auto-update
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class AutoUpdatePage{
-    public page: Page
+    readonly page: Page
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly enable_updates_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.button_name = jsonData['isw']['auto-update']['auto-update-btn']
 
-    async click_enable_auto_apdate() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/auto-update');
-
-        await this.page.getByRole('button', { name: 'Enable Automatic Updates' }).click();
+        this.enable_updates_button = page.getByRole('button', { name: this.button_name })
     }
 }

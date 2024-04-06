@@ -1,17 +1,26 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/select-country-or-region
+import { Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class SelectCountryOrRegionPage{
-    public page: Page
+    readonly page: Page
+    readonly country_name: string
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly country_selector: Locator
+    readonly select_country: Locator
+    readonly next_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.country_name = jsonData['country']['RU']
+        this.button_name = jsonData['isw']['buttons']['next']
 
-    async select_country_and_click_next() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/select-country-or-region');
-
-        await this.page.locator('.mat-form-field-infix').first().click();
-        await this.page.getByText('Russia').click();
-        await this.page.getByRole('button', { name: 'Next' }).click();
+        this.country_selector = page.locator('.mat-form-field-infix').first()
+        this.select_country = page.getByRole('option', { name: this.country_name })
+        // this.select_country = page.getByText(this.country_name)
+        this.next_button = page.getByRole('button', { name: this.button_name })
     }
 }

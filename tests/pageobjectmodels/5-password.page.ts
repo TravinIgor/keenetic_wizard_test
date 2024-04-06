@@ -1,16 +1,23 @@
-import { expect, Page } from "@playwright/test";
+// /wizards/initial-setup/password
+import { expect, Locator, Page } from "@playwright/test"
+import fs from 'fs'
 
 export class PasswordPage{
-    public page: Page
+    readonly page: Page
+    readonly password_field_name: string
+    readonly button_name: string
 
-    constructor(page: Page) {
+    readonly password_field: Locator
+    readonly next_button: Locator
+
+    constructor(page: Page, language: string) {
+        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
+        let jsonData = JSON.parse(rawData)
         this.page = page
-    }
+        this.password_field_name = jsonData['password']
+        this.button_name = jsonData['isw']['buttons']['next']
 
-    async fill_password_and_click_next() {
-        await expect(this.page).toHaveURL('http://192.168.1.1/wizards/initial-setup/password');
-
-        await this.page.getByLabel('Password').fill('12345');
-        await this.page.getByRole('button', { name: 'Next' }).click();
+        this.password_field = page.getByLabel(this.password_field_name)
+        this.next_button = page.getByRole('button', { name: this.button_name })
     }
 }
