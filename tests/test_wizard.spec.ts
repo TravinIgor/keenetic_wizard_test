@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import { test } from '@playwright/test'
 import { LoginPage } from './pageobjectmodels/authorization.page'
 import { CommandPage } from './pageobjectmodels/command.page'
@@ -19,16 +20,21 @@ import { YourKeeneticCredentialsPage } from './pageobjectmodels/15-your-keenetic
 import { CongratulatePage } from './pageobjectmodels/16-congratulate.page'
 
 
-const language = 'ru'
+dotenv.config()
+const language = process.env.LANGUAGE as string
+const base_url = process.env.BASE_URL
+const wizard = `${base_url}${process.env.WIZARD}`
+const my_password = process.env.PASSWORD as string
+
 
 test.beforeEach('reset before each test', async ({ page }) => {
   test.setTimeout(10 * 60 * 1000)
   const auth = new LoginPage(page)
   const command = new CommandPage(page)
 
-  await page.goto('http://192.168.1.1/a')
+  await page.goto(`${base_url}/a`)
   await auth.login()
-  await page.waitForURL('http://192.168.1.1/a')
+  await page.waitForURL(`${base_url}/a`)
   await command.command_field.fill('system configuration factory-reset')
   await command.send_request_button.click()
   await page.waitForTimeout(120 * 1000)
@@ -55,63 +61,62 @@ test('Wizard test', async ({ page }) => {
   const credentials = new YourKeeneticCredentialsPage(page, language)
   const congratulate = new CongratulatePage(page, language)
 
-  await page.goto('http://192.168.1.1/wizards/initial-setup')
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup')
+  await page.goto(`${wizard}`)
+  await page.waitForURL(`${wizard}`)
   await welcomepage.language_selector.click()
   await welcomepage.select_language.click()
   await welcomepage.run_wizard_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/select-configuration-option')
+  await page.waitForURL(`${wizard}/select-configuration-option`)
   await selectconfig.select_option.click()
   await selectconfig.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/select-country-or-region')
+  await page.waitForURL(`${wizard}/select-country-or-region`)
   await selectregion.country_selector.click()
   await selectregion.select_country.click()
   await selectregion.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/terms-and-privacy')
+  await page.waitForURL(`${wizard}/terms-and-privacy`)
   await termsandprivacy.checkbox.click()
   await termsandprivacy.accept_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/accept-device-privacy-notice')
+  await page.waitForURL(`${wizard}/accept-device-privacy-notice`)
   await RUacceptprivacy.checkbox.click()
   await RUacceptprivacy.accept_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/password')
-  await password.password_field.fill('12345')
+  await page.waitForURL(`${wizard}/password`)
+  await password.password_field.fill(my_password)
   await password.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/tv-option')
+  await page.waitForURL(`${wizard}/tv-option`)
   await tvoption.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/vlan-information')
+  await page.waitForURL(`${wizard}/vlan-information`)
   await vlaninfo.without_VLAN_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/connect-keenetic-to-wall-outlet')
+  await page.waitForURL(`${wizard}/connect-keenetic-to-wall-outlet`)
   await connect.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/auto-update')
+  await page.waitForURL(`${wizard}/auto-update`)
   await autoupdate.enable_updates_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/auto-update-schedule')
+  await page.waitForURL(`${wizard}/auto-update-schedule`)
   await schedule.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/wifi-settings')
+  await page.waitForURL(`${wizard}/wifi-settings`)
   await wifisettings.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/digital-certificates')
-  await certificates.info_message.isVisible()
+  await page.waitForURL(`${wizard}/digital-certificates`)
   await certificates.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/product-improvement')
+  await page.waitForURL(`${wizard}/product-improvement`)
   await productimprove.refuse_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/your-keenetic-credentials')
+  await page.waitForURL(`${wizard}/your-keenetic-credentials`)
   await credentials.next_button.click()
 
-  await page.waitForURL('http://192.168.1.1/wizards/initial-setup/congratulate')
+  await page.waitForURL(`${wizard}/congratulate`)
   await congratulate.finish_button.click()
 
-  await page.waitForURL('http://192.168.1.1/dashboard')
+  await page.waitForURL(`${base_url}/dashboard`)
 })

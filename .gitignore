@@ -5,3 +5,5 @@ node_modules/
 /playwright/.cache/
 /tests-examples/
 /localizations/
+.env
+123.ts

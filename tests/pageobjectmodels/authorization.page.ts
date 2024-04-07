@@ -1,5 +1,10 @@
 // /login
 import { Locator, Page } from "@playwright/test";
+import dotenv from 'dotenv'
+
+dotenv.config()
+const login = process.env.LOGIN as string
+const pass = process.env.PASSWORD as string
 
 export class LoginPage{
     readonly page: Page
@@ -23,8 +28,8 @@ export class LoginPage{
     }
 
     async login() {
-        await this.username_field.fill('admin')
-        await this.password_field.fill('12345')
+        await this.username_field.fill(login)
+        await this.password_field.fill(pass)
         await this.login_button.click()
     }
 }

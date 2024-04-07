@@ -20,7 +20,6 @@ export class SelectCountryOrRegionPage{
 
         this.country_selector = page.locator('.mat-form-field-infix').first()
         this.select_country = page.getByRole('option', { name: this.country_name })
-        // this.select_country = page.getByText(this.country_name)
         this.next_button = page.getByRole('button', { name: this.button_name })
     }
 }

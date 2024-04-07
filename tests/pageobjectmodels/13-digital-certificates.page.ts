@@ -15,7 +15,6 @@ export class DigitalCertificatesPage{
         this.page = page
         this.button_name = jsonData['isw']['buttons']['next']
 
-        this.info_message = page.getByText('info')
         this.next_button = page.getByRole('button', { name: this.button_name })
     }
 }
