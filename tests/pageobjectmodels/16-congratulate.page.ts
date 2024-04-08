@@ -1,18 +1,15 @@
 // /wizards/initial-setup/congratulate
 import { Locator, Page } from "@playwright/test"
-import fs from 'fs'
+import { BasePage } from "./base.page"
 
-export class CongratulatePage{
-    readonly page: Page
+export class CongratulatePage extends BasePage{
     readonly button_name: string
 
     readonly finish_button: Locator
 
     constructor(page: Page, language: string) {
-        let rawData = fs.readFileSync(`./localizations/locale.${language}.json`)
-        let jsonData = JSON.parse(rawData)
-        this.page = page
-        this.button_name = jsonData['isw']['buttons']['finish']
+        super(page, language)
+        this.button_name = this.buttons['finish']
 
         this.finish_button = page.getByRole('button', { name: this.button_name })
     }
