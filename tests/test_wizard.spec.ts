@@ -21,7 +21,7 @@ import { CongratulatePage } from './pageobjectmodels/16-congratulate.page'
 
 
 dotenv.config()
-const language = process.env.LANGUAGE as string
+
 const base_url = process.env.BASE_URL
 const wizard = `${base_url}${process.env.WIZARD}`
 const my_password = process.env.PASSWORD as string
@@ -44,79 +44,79 @@ test.beforeEach('reset before each test', async ({ page }) => {
 test('Wizard test', async ({ page }) => {
   test.setTimeout(20 * 60 * 1000)
 
-  const welcomepage = new WelcomePage(page, language)
-  const selectconfig = new SelectConfigurationOptionsPage(page, language)
-  const selectregion = new SelectCountryOrRegionPage(page, language)
-  const termsandprivacy = new TermsAndPrivacyPage(page, language)
-  const RUacceptprivacy = new AcceptDevicePrivacyNoticePage(page, language)
-  const password = new PasswordPage(page, language)
-  const tvoption = new TvOptionPage(page, language)
-  const vlaninfo = new VlanInformationPage(page, language)
-  const connect = new ConnectKeeneticToWallOutletPage(page, language)
-  const autoupdate = new AutoUpdatePage(page, language)
-  const schedule = new AutoUpdateSchedulePage(page, language)
-  const wifisettings = new WifiSettingsPage(page, language)
-  const certificates = new DigitalCertificatesPage(page, language)
-  const productimprove = new ProductImprovementPage(page, language)
-  const credentials = new YourKeeneticCredentialsPage(page, language)
-  const congratulate = new CongratulatePage(page, language)
+  const welcomepage = new WelcomePage(page)
+  const selectconfig = new SelectConfigurationOptionsPage(page)
+  const selectregion = new SelectCountryOrRegionPage(page)
+  const termsandprivacy = new TermsAndPrivacyPage(page)
+  const RUacceptprivacy = new AcceptDevicePrivacyNoticePage(page)
+  const password = new PasswordPage(page)
+  const tvoption = new TvOptionPage(page)
+  const vlaninfo = new VlanInformationPage(page)
+  const connect = new ConnectKeeneticToWallOutletPage(page)
+  const autoupdate = new AutoUpdatePage(page)
+  const schedule = new AutoUpdateSchedulePage(page)
+  const wifisettings = new WifiSettingsPage(page)
+  const certificates = new DigitalCertificatesPage(page)
+  const productimprove = new ProductImprovementPage(page)
+  const credentials = new YourKeeneticCredentialsPage(page)
+  const congratulate = new CongratulatePage(page)
 
   await page.goto(`${wizard}`)
   await page.waitForURL(`${wizard}`)
-  await welcomepage.language_selector.click()
-  await welcomepage.select_language.click()
-  await welcomepage.run_wizard_button.click()
+  await welcomepage.languageSelector.click()
+  await welcomepage.selectLanguage.click()
+  await welcomepage.runWizardButton.click()
 
   await page.waitForURL(`${wizard}/select-configuration-option`)
-  await selectconfig.select_option.click()
-  await selectconfig.next_button.click()
+  await selectconfig.selectOption.click()
+  await selectconfig.nextButton.click()
 
   await page.waitForURL(`${wizard}/select-country-or-region`)
-  await selectregion.country_selector.click()
-  await selectregion.select_country.click()
-  await selectregion.next_button.click()
+  await selectregion.countrySelector.click()
+  await selectregion.selectCountry.click()
+  await selectregion.nextButton.click()
 
   await page.waitForURL(`${wizard}/terms-and-privacy`)
   await termsandprivacy.checkbox.click()
-  await termsandprivacy.accept_button.click()
+  await termsandprivacy.acceptButton.click()
 
   await page.waitForURL(`${wizard}/accept-device-privacy-notice`)
   await RUacceptprivacy.checkbox.click()
-  await RUacceptprivacy.accept_button.click()
+  await RUacceptprivacy.acceptButton.click()
 
   await page.waitForURL(`${wizard}/password`)
-  await password.password_field.fill(my_password)
-  await password.next_button.click()
+  await password.passwordField.fill(my_password)
+  await password.nextButton.click()
 
   await page.waitForURL(`${wizard}/tv-option`)
-  await tvoption.next_button.click()
+  await tvoption.nextButton.click()
 
   await page.waitForURL(`${wizard}/vlan-information`)
-  await vlaninfo.without_VLAN_button.click()
+  await vlaninfo.withoutVLANButton.click()
 
   await page.waitForURL(`${wizard}/connect-keenetic-to-wall-outlet`)
-  await connect.next_button.click()
+  await connect.nextButton.click()
 
   await page.waitForURL(`${wizard}/auto-update`)
-  await autoupdate.enable_updates_button.click()
+  await autoupdate.enableUpdatesButton.click()
 
   await page.waitForURL(`${wizard}/auto-update-schedule`)
-  await schedule.next_button.click()
+  await schedule.nextButton.click()
 
   await page.waitForURL(`${wizard}/wifi-settings`)
-  await wifisettings.next_button.click()
+  await wifisettings.nextButton.click()
 
   await page.waitForURL(`${wizard}/digital-certificates`)
-  await certificates.next_button.click()
+  await certificates.nextButton.click()
 
   await page.waitForURL(`${wizard}/product-improvement`)
-  await productimprove.refuse_button.click()
+  await productimprove.refuseButton.click()
 
   await page.waitForURL(`${wizard}/your-keenetic-credentials`)
-  await credentials.next_button.click()
+  await credentials.nextButton.click()
 
   await page.waitForURL(`${wizard}/congratulate`)
-  await congratulate.finish_button.click()
+  await congratulate.finishButton.click()
 
   await page.waitForURL(`${base_url}/dashboard`)
 })

@@ -4,7 +4,7 @@ import { BasePageWithNextButton } from "./base.page"
 
 export class WifiSettingsPage extends BasePageWithNextButton{
 
-    constructor(page: Page, language: string) {
-        super(page, language)
+    constructor(page: Page) {
+        super(page)
     }
 }

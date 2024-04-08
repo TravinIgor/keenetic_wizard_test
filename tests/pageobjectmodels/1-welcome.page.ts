@@ -2,21 +2,20 @@
 import { Locator, Page } from "@playwright/test"
 import { BasePage } from "./base.page"
 
+
+const language = process.env.LANGUAGE
+
+
 export class WelcomePage extends BasePage{
-    readonly language_name: string
-    readonly button_name: string
+    readonly languageSelector: Locator
+    readonly selectLanguage: Locator
+    readonly runWizardButton: Locator
 
-    readonly language_selector: Locator
-    readonly select_language: Locator
-    readonly run_wizard_button: Locator
+    constructor(page: Page) {
+        super(page)
 
-    constructor(page: Page, language: string) {
-        super(page, language)
-        this.language_name = this.jsonData['languages'][language]
-        this.button_name = this.jsonData['run-wizard']
-
-        this.language_selector = page.locator('#mat-select-value-1')
-        this.select_language = page.getByRole('option', { name: this.language_name })
-        this.run_wizard_button = page.getByRole('button', { name: this.button_name })
+        this.languageSelector = page.locator('#mat-select-value-1')
+        this.selectLanguage = page.getByRole('option', { name: this.localizationData['languages'][language] })
+        this.runWizardButton = page.getByRole('button', { name: this.localizationData['run-wizard'] })
     }
 }

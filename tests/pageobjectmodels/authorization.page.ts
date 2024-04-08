@@ -8,28 +8,22 @@ const pass = process.env.PASSWORD as string
 
 export class LoginPage{
     readonly page: Page
-    readonly username_field_name: string
-    readonly password_field_name: string
-    readonly button_name: string
 
-    readonly username_field: Locator
-    readonly password_field: Locator
-    readonly login_button: Locator
+    readonly usernamField: Locator
+    readonly passwordField: Locator
+    readonly loginButton: Locator
 
     constructor(page: Page) {
         this.page = page
-        this.username_field_name = 'Username'
-        this.password_field_name = 'Password'
-        this.button_name = 'Log In'
 
-        this.username_field = page.getByLabel(this.username_field_name)
-        this.password_field = page.getByLabel(this.password_field_name)
-        this.login_button = page.getByRole('button', { name: this.button_name })
+        this.usernamField = page.getByLabel('Username')
+        this.passwordField = page.getByLabel('Password')
+        this.loginButton = page.getByRole('button', { name: 'Log In' })
     }
 
     async login() {
-        await this.username_field.fill(login)
-        await this.password_field.fill(pass)
-        await this.login_button.click()
+        await this.usernamField.fill(login)
+        await this.passwordField.fill(pass)
+        await this.loginButton.click()
     }
 }

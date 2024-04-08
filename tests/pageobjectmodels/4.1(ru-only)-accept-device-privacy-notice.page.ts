@@ -5,7 +5,7 @@ import { TermsAndPrivacyPage } from "./4-terms-and-privacy.page"
 
 export class AcceptDevicePrivacyNoticePage extends TermsAndPrivacyPage{
 
-    constructor(page: Page, language: string) {
-        super(page, language)
+    constructor(page: Page) {
+        super(page)
     }
 }

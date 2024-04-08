@@ -1,28 +1,27 @@
 import { Locator, Page } from "@playwright/test"
 import fs from 'fs'
 
+
+const language = process.env.LANGUAGE
+
+
 export class BasePage{
     readonly page: Page
-    readonly language_name: string
     readonly buttons: string
-    readonly jsonData: string
+    readonly localizationData: string
 
-    readonly language_selector: Locator
-    readonly select_language: Locator
-    readonly run_wizard_button: Locator
-
-    constructor(page: Page, language: string) {
-        this.jsonData = JSON.parse(fs.readFileSync(`./localizations/locale.${language}.json`).toString())
+    constructor(page: Page) {
+        this.localizationData = JSON.parse(fs.readFileSync(`./localizations/locale.${language}.json`).toString())
         this.page = page
-        this.buttons = this.jsonData['isw']['buttons']
+        this.buttons = this.localizationData['isw']['buttons']
     }
 }
 
 export class BasePageWithNextButton extends BasePage{
-    readonly next_button:  Locator
+    readonly nextButton:  Locator
 
-    constructor(page: Page, language: string) {
-        super(page, language)
-        this.next_button = page.getByRole('button', { name: this.buttons['next'] })
+    constructor(page: Page) {
+        super(page)
+        this.nextButton = page.getByRole('button', { name: this.buttons['next'] })
     }
 }

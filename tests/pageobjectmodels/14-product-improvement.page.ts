@@ -3,14 +3,11 @@ import { Locator, Page } from "@playwright/test"
 import { BasePage } from "./base.page"
 
 export class ProductImprovementPage extends BasePage{
-    readonly button_name: string
+    readonly refuseButton: Locator
 
-    readonly refuse_button: Locator
+    constructor(page: Page) {
+        super(page)
 
-    constructor(page: Page, language: string) {
-        super(page, language)
-        this.button_name = this.buttons['do-not-share']
-
-        this.refuse_button = page.getByRole('button', { name: this.button_name })
+        this.refuseButton = page.getByRole('button', { name: this.buttons['do-not-share'] })
     }
 }
